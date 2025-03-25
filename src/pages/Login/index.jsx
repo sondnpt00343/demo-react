@@ -1,4 +1,5 @@
 import config from "@/config";
+import httpRequest from "@/utils/httpRequest";
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -27,7 +28,7 @@ function Login() {
                 return res.json();
             })
             .then((data) => {
-                localStorage.setItem("token", data.access_token);
+                httpRequest.setToken(data.access_token);
                 navigate(params.get("continue") || config.routes.home);
             })
             .catch(() => {

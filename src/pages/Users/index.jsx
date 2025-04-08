@@ -9,8 +9,8 @@ function Users() {
 
     useEffect(() => {
         (async () => {
-            const users = await userService.getAll();
-            setUsers(users);
+            const response = await userService.getAll();
+            setUsers(response.data);
         })();
     }, []);
 

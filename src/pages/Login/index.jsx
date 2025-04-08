@@ -1,66 +1,28 @@
-import config from "@/config";
-import httpRequest from "@/utils/httpRequest";
-import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+
+import httpRequest from "@/utils/httpRequest";
+import authService from "@/services/authService";
+import Form, { TextInput } from "@/components/Forms";
+import config from "@/config";
 
 function Login() {
     const [params] = useSearchParams();
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [hasError, setHasError] = useState(false);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        const formValues = { email, password };
-
-        fetch("https://api01.f8team.dev/api/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formValues),
-        })
-            .then((res) => {
-                if (!res.ok) throw res;
-                return res.json();
-            })
-            .then((data) => {
-                httpRequest.setToken(data.access_token);
-                navigate(params.get("continue") || config.routes.home);
-            })
-            .catch(() => {
-                setHasError(true);
-            });
+    const handleSubmit = async (data) => {
+        const response = await authService.login(data);
+        httpRequest.setToken(response.access_token);
+        navigate(params.get("continue") || config.routes.home);
     };
 
     return (
         <div>
             <h1>Login</h1>
-            <form action="" onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    value={email}
-                    onChange={(e) => {
-                        setEmail(e.target.value);
-                        setHasError(false);
-                    }}
-                />
-                <br />
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => {
-                        setPassword(e.target.value);
-                        setHasError(false);
-                    }}
-                />
-                <br />
-                {hasError && <p>Email hoặc mật khẩu không hợp lệ.</p>}
+            <Form onSubmit={handleSubmit}>
+                <TextInput name="email" />
+                <TextInput name="password" />
                 <button>Login</button>
-            </form>
+            </Form>
         </div>
     );
 }

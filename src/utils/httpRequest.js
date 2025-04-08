@@ -14,11 +14,7 @@ const send = async (method, url, data, config) => {
         data,
         ...config,
     });
-    if (response.status >= 200 && response.status < 400) {
-        return response.data;
-    }
-
-    // Handle errors
+    return response.data;
 };
 
 export const get = (url, config) => {

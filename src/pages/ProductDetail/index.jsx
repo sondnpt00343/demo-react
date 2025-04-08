@@ -8,8 +8,8 @@ function ProductDetail() {
     useEffect(() => {
         fetch(`https://api01.f8team.dev/api/products/${params.slug}`)
             .then((res) => res.json())
-            .then((data) => {
-                setProduct(data);
+            .then((response) => {
+                setProduct(response.data);
             });
     }, [params.slug]);
 

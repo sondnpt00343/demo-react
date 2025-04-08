@@ -3,21 +3,24 @@ import { Link } from "react-router-dom";
 
 import config from "@/config";
 import * as productService from "@/services/productService";
+import useUser from "@/hooks/useUser";
 
 function Products() {
     const [products, setProducts] = useState([]);
+    const user = useUser();
 
     useEffect(() => {
-        const handle = async () => {
-            const res = await productService.getAll();
-            setProducts(res.data);
+        const fetchProducts = async () => {
+            const response = await productService.getAll();
+            setProducts(response.data.items);
         };
-        handle();
+        fetchProducts();
     }, []);
 
     return (
         <div>
             <h1>Products page</h1>
+            {user && <p>Hi, {user.firstName}</p>}
             <ul>
                 {products.map((product) => (
                     <li key={product.id}>

@@ -5,8 +5,9 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 
 import styles from "./Button.module.scss";
+// import { useEffect } from "react";
 
-function Button({
+const Button = ({
     children,
     icon,
     to = "",
@@ -18,7 +19,15 @@ function Button({
     disabled = false,
     loading = false,
     onClick,
-}) {
+}) => {
+    // useEffect(() => {
+    //     console.log("Mounted");
+
+    //     return () => {
+    //         console.log("Clean up");
+    //     };
+    // }, []);
+
     let Component = "button";
     const passProps = {};
 
@@ -58,10 +67,10 @@ function Button({
             )}
         </Component>
     );
-}
+};
 
 Button.propTypes = {
-    children: PropTypes.node.isRequired,
+    children: PropTypes.node,
     className: PropTypes.string,
     to: PropTypes.string,
     href: PropTypes.string,

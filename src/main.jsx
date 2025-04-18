@@ -1,10 +1,11 @@
 import ReactDOM from "react-dom/client";
+import { Provider as ReduxProvider } from "react-redux";
 import App from "@/App";
-import { UserProvider } from "@/contexts/UserContext";
+import store from "./store";
 import "@/index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <UserProvider>
+    <ReduxProvider store={store}>
         <App />
-    </UserProvider>
+    </ReduxProvider>
 );

@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 
 const defaultFn = () => {};
 
@@ -16,8 +17,11 @@ function Tabs({ defaultIndex = 0, children, onChange = defaultFn }) {
         prevIndex.current = currentIndex;
     }, [currentIndex, onChange]);
 
+    const currentUser = useSelector((state) => state.auth.currentUser);
+
     return (
         <div className="tabs-container">
+            {currentUser && <p>Hi, {currentUser.firstName}</p>}
             <div className="tabs-list">
                 {tabs.map((child, index) => {
                     const active = index === currentIndex;

@@ -1,19 +1,20 @@
 import PropTypes from "prop-types";
-import { useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
 import config from "@/config";
-import { UserContext } from "@/contexts/UserContext";
+import useCurrentUser from "@/hooks/useCurrentUser";
+import { useSelector } from "react-redux";
 
 function ProtectedRoute({ children }) {
     const location = useLocation();
-    const userContext = useContext(UserContext);
+    const user = useCurrentUser();
+    const isLoading = useSelector((state) => state.auth.isLoading);
 
-    if (userContext.isLoading) {
+    if (isLoading) {
         return <div>Loading...</div>;
     }
 
-    if (!userContext.user) {
+    if (!user) {
         const path = encodeURIComponent(location.pathname);
         return <Navigate to={`${config.routes.login}?continue=${path}`} />;
     }

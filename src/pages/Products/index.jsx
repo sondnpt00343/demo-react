@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 
 import config from "@/config";
 import * as productService from "@/services/productService";
-import useUser from "@/hooks/useUser";
+import useCurrentUser from "@/hooks/useCurrentUser";
 
 function Products() {
     const [products, setProducts] = useState([]);
-    const user = useUser();
+    const user = useCurrentUser();
 
     useEffect(() => {
         const fetchProducts = async () => {

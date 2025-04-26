@@ -1,22 +1,32 @@
-import { applyMiddleware, combineReducers, legacy_createStore } from "redux";
-import { reducer as productReducer } from "@/reducers/product";
-import { reducer as authReducer } from "@/reducers/auth";
-import { thunk } from "redux-thunk";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import logger from "redux-logger";
 
-const initState = {};
+import authReducer from "@/features/auth/authSlice";
+import { productApi } from "@/services/product";
+import { setupListeners } from "@reduxjs/toolkit/query";
+
+const rootConfig = {
+    key: "root",
+    storage,
+    whitelist: ["auth"],
+};
 
 const rootReducer = combineReducers({
-    product: productReducer,
     auth: authReducer,
+    [productApi.reducerPath]: productApi.reducer,
 });
 
-const store = legacy_createStore(
-    rootReducer,
-    initState,
-    applyMiddleware(thunk, logger)
-);
+export const store = configureStore({
+    reducer: persistReducer(rootConfig, rootReducer),
+    middleware: (getDefault) =>
+        getDefault({ serializableCheck: false }).concat(
+            // logger,
+            productApi.middleware
+        ),
+});
 
-window.store = store;
+setupListeners(store.dispatch);
 
-export default store;
+export const persistor = persistStore(store);

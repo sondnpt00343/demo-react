@@ -1,21 +1,30 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import config from "@/config";
-import * as productService from "@/services/productService";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import {
+    useGetAllProductsQuery,
+    // useUpdateProductMutation,
+} from "@/services/product";
+// import { useEffect } from "react";
 
 function Products() {
-    const [products, setProducts] = useState([]);
     const user = useCurrentUser();
+    const { data, isLoading } = useGetAllProductsQuery();
+    // const [updateProduct] = useUpdateProductMutation();
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            const response = await productService.getAll();
-            setProducts(response.data.items);
-        };
-        fetchProducts();
-    }, []);
+    // useEffect(() => {
+    //     updateProduct({
+    //         id: 1,
+    //         name: "Name",
+    //     });
+    // }, [updateProduct]);
+
+    if (isLoading) {
+        return <p>Loading...</p>;
+    }
+
+    const products = data.data.items;
 
     return (
         <div>

@@ -11,6 +11,14 @@ export const login = async (data) => {
     return response.data;
 };
 
+export const refreshToken = async (refreshToken) => {
+    const response = await httpRequest.post("/auth/refresh-token", {
+        refresh_token: refreshToken,
+    });
+
+    return response.data;
+};
+
 export const checkEmail = async (email) => {
     const response = await httpRequest.get("/auth/check-email", {
         params: {
@@ -24,4 +32,5 @@ export default {
     getCurrentUser,
     login,
     checkEmail,
+    refreshToken,
 };

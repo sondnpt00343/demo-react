@@ -1,7 +1,7 @@
 import * as httpRequest from "@/utils/httpRequest";
 
-export const getAll = async () => {
-    const response = await httpRequest.get("/users");
+export const getAll = async (index) => {
+    const response = await httpRequest.get(`/users?index=${index}`);
     return response;
 };
 
